@@ -1,48 +1,57 @@
 # CSC 474 — Network Security
 
-Coursework from **NC State University, Fall 2022**. Java and Python.
-Published later, so commit dates are the publication date, not when the work was done.
+**NC State, Fall 2022.** Break some crypto, then write the tool that catches you doing it.
 
-## hw1 — classical cryptanalysis
+> Commit dates are the publication date; the work is from Fall 2022.
 
-`Julius.java` brute-forces single-byte XOR over a base64 payload — all 256 keys, print every
-candidate, read the one that's English.
+## 🔓 Breaking a repeating-key XOR — `hw1/Alan.java`
 
-`Alan.java` (174 lines) is the real one: a **repeating-key XOR breaker**. It computes the
-**index of coincidence** across a 64-character alphabet to recover the key length (5), then
-frequency-ranks the bytes in each position and brute-forces against the most common English
-characters to recover the key itself. The written analyses apply the same IoC method to a
-classical Vigenère — every key length tested, length 6 selected at IoC 0.0672.
+The one worth reading. 174 lines, no libraries, and it recovers a key it was never given:
 
-## hw3 — password cracking
+1. Compute the **index of coincidence** across a 64-character alphabet to find the key *length*
+   (it's 5 — the statistics say so before you ever guess a character).
+2. Slice the ciphertext into 5 columns, one per key position.
+3. Frequency-rank each column and brute-force against the most common English characters.
+4. Out falls the key.
 
-Write-ups rather than code: hashcat against MD5 with a 6-character mask on GPU, SHA-256 with a
-custom `?l?d?u` charset under `--increment`, and bcrypt against rockyou — plus a hand-written
-Python brute-forcer for a custom 100-round MD5/SHA-256/SHA-512 construction. The written portion
-covers nonce replay protection, a MITM against a signing protocol, and Kerberos authentication.
+`Julius.java` is the warm-up: single-byte XOR, all 256 keys, read the one that's English.
+The written analyses do the same IoC trick against a classical Vigenère — every key length tested,
+length 6 chosen at IoC 0.0672.
 
-## hw5 — port scanning, and catching it
+## 🕵️ Scanning, evading, and getting caught — `hw5/`
 
-The interesting pair on this repo: an attack and the defence for it.
+An attack and its defence, written as a pair:
 
-| File | Role |
+| File | Side |
 |---|---|
-| `PortScan.py` | Sequential TCP connect scan across all 65,535 ports, naming services via `getservbyport`, reporting ports/sec |
-| `PortScanToo.py` | The same scan in randomized port order, to defeat detectors that look for sequential sweeps |
-| `PSDetect.py` | The defender — a Scapy `sniff()` handler keeping a per-source-IP map of ports touched, expiring entries older than 5 seconds, and alerting when one host hits 15 distinct ports inside that window |
+| `PortScan.py` | Sequential TCP connect scan of all 65,535 ports, naming services as it goes |
+| `PortScanToo.py` | Same scan, **randomized port order** — defeats anything looking for a sequential sweep |
+| `PSDetect.py` | The defender. Scapy `sniff()`, a per-source-IP map of ports touched, entries expiring after 5s, alert at 15 distinct ports inside the window |
 
-`PSDetect.py` is 39 lines and contains the whole idea: a port scan isn't identifiable by any single
-packet, only by a rate across a time window, so detection is a sliding-window problem rather than a
-signature-matching one.
+`PSDetect.py` is **39 lines** and contains the whole insight: no single packet is a port scan.
+It's only a scan as a *rate over a window* — so detection is sliding-window bookkeeping, not
+signature matching. Randomizing port order beats a naive detector and does nothing against this one.
+
+## 🔨 Cracking — `hw3/`
+
+hashcat against MD5 (6-char mask, GPU), SHA-256 (custom `?l?d?u` charset with `--increment`),
+bcrypt against rockyou — plus a hand-written Python brute-forcer for a custom 100-round
+MD5/SHA-256/SHA-512 construction. Written work covers nonce replay, MITM on a signing protocol,
+and Kerberos.
 
 ## Not included
 
-hw2 was a GPG web-of-trust exercise — a key-signing party with about 35 classmates. Their keys and
-names are other people's data, so that assignment is left out of this repo.
-
-## Running
+hw2 was a GPG key-signing party with ~35 classmates. Their keys and names are their data, not mine
+to publish.
 
 ```bash
 javac hw1-cryptanalysis/Alan.java && java Alan
-pip install scapy && sudo python3 hw5-port-scanning/PSDetect.py   # needs raw sockets
+pip install scapy && sudo python3 hw5-port-scanning/PSDetect.py
 ```
+
+---
+
+*More: [CSC 230](https://github.com/pbairoliya/csc230-c-software-tools) ·
+[CSC 246](https://github.com/pbairoliya/csc246-operating-systems) ·
+[CSC 484](https://github.com/pbairoliya/csc484-game-ai) ·
+[where it started](https://github.com/pbairoliya/first-code)*
