@@ -1,0 +1,18 @@
+1) 
+    a) A nonce is a number used once: this can be in the form of numbers or strings that are randomly or psudo-randomly generated.Bob is using a nonce to make sure that there are no replay attacks possible for his protocol.
+    
+    b) An advesary can attack this Pay Me! Protocol by utizing the middle person attack. This can be done by intercepting the signature that Alice sends to the Pay me server, and switch the private key and thus send it to bob while changing "B". This way you can change the original message without bob knowing so and harm the honest user. 
+2)
+    a) The first attack that can be utalized against this protocol is the person in teh middle attack and this can be done because in this protocol the authentication is not mutaul. Hence an advesary can come in between the hand off of hte first exchange, and thus get the information and infiltrate the information. The second type of attack is that an advesary can make the user sign something that is not the correct message due to the fact that the user is not utalizing a differnt private key like suggested in class during authenticaiton.
+
+    b) You would not want any man in the middle and also not utalize the same private key hence the new protocol should stop from those attacks:
+    x -> S:  r,IDx E(xA-B,[IDx, PWx, r]) 
+
+    c)In practice, public-key cryptography is often used to distribute session keys, which are then used with symmetric algorithms. This practice is utualized instead of normal public keys becasue session keys provide confidentiality and integrity for messages due to the fact that after that session the key is then destoryed.
+
+3) 
+    a) There is client authentication as the server in this protocol can look at the ticke thtat is given by the client which contains the shared known key K(c-v) and thus because the client provides this to the server the client can now be authenticated. The client also provides the time it sent this packet and its personal IP adress and ID of the client. All of this information helps the protrocol achieve client authenticaiton.
+
+    b)There is also server authentication as the server sends back the encrypted version of the shared session key K(c-v) and the time provided by the client plus 1. This message sent back by the server can only be created if it knows the session key which the client only provided to the server in the ticket. The ticket can only be decrypted by the correct servers private key. If the server has the correct private key then it is the correct server hence this means that there is server authentication as well in this protocol.
+
+    c)  By removing the TGS, the Woofwoof protocol loses the single sign on attribute of Kerberos. 

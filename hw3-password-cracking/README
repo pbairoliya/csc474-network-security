@@ -1,0 +1,13 @@
+MD5: UaPKIw
+Algorithm used was hashcat and i utalized the following command - Hashcat.exe hashes.txt -d2 -a3 -m0 -w3 ?a?a?a?a?a?a.
+I utilized a mask to make the runtime of the following command much faster. I also made hashcat utalize my GPU which made the program only take a mere seonds
+SHA256: MEhmwVf
+I used the following hashcat algorithm for the sha 256 hash password cracker - hashcat.exe hashes2.txt -d2 -w3 -a3 -m1400 -i --increment-min=7 -1=?l?d?u ?1?1?1?1?1?1?1
+Here I made my own mask with a chracterset. This again only took a few minutes with teh mask and also utalizing my GPU
+bcrypt: iloveyou
+I used the following hashcat algorithm and this time I gave it a wordlist. Online it was recommended to use the rockyou wordlist and thats the one I utalized. This program
+only took meer seconds again on my 6900xt Graphics card. 
+custom: wgcih
+For the last and final password cracking, I could not use hashcat becasue md5 sha256 sha512 100 times each, that is why I ran a python script which brute forced every possibiltyi between aaaaa and zzzzz 
+I did this alorithm based on the intelligence given 
+custom ec: <part 5 password>
